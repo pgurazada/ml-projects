@@ -23,7 +23,7 @@ def read():
     return x_train, y_train
 
 def cross_validate(x_train, y_train):
-    rf_classif = RandomForestClassifier(n_estimators=500,
+    rf_classif = RandomForestClassifier(n_estimators=1000,
                                         max_features='auto',
                                         criterion='gini',
                                         min_samples_leaf=1,
