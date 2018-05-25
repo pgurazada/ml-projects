@@ -50,13 +50,13 @@ y_train = pd.read_csv('processed/wells_labels_train.csv')['status'].tolist()
 
 # ### Number of estimators
 
-# In[9]:
+# In[ ]:
 
 
 n_estimators_list = [50, 100, 500, 1000]
 
 
-# In[10]:
+# In[ ]:
 
 
 rf_classif = RandomForestClassifier(n_estimators=50,
@@ -65,7 +65,7 @@ rf_classif = RandomForestClassifier(n_estimators=50,
                                     n_jobs=3)
 
 
-# In[12]:
+# In[ ]:
 
 
 rf_cv = GridSearchCV(estimator=rf_classif, 
@@ -74,13 +74,13 @@ rf_cv = GridSearchCV(estimator=rf_classif,
                      n_jobs=3)
 
 
-# In[13]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
 
 
-# In[18]:
+# In[ ]:
 
 
 rf_cv.cv_results_['mean_test_score']
@@ -88,41 +88,34 @@ rf_cv.cv_results_['mean_test_score']
 
 # ### Maximum depth of the tree
 
-# ### Maximum features is the number of features to consider at each split 
-
-# ### Minimum samples to split an internal node
-
-# ### Minimum samples to be a leaf node
-
-# Now we tune the random forests model over a parameter grid
-
 # In[ ]:
 
 
-pgrid = {'criterion' : ['gini', 'entropy'],
-         'min_samples_leaf' : [1, 10, 20, 50],
-         'min_samples_split' : [2, 10, 20, 30],
-         'n_estimators' : [100, 500, 1000]}
+np.sqrt(x_train.shape[1])
 
 
 # In[ ]:
 
 
-rf_classif = RandomForestClassifier(n_estimators = 100,
-                                    max_features = 'auto',
-                                    oob_score = True,
-                                    random_state = 20130810,
-                                    n_jobs = -1)
+max_depth_list = [5, 15, 30, 50, 100]
 
 
 # In[ ]:
 
 
-rf_cv = RandomizedSearchCV(estimator=rf_classif,
-                           param_distributions = pgrid,
-                           n_iter = 25,
-                           cv = 10,
-                           n_jobs = -1)
+rf_classif = RandomForestClassifier(n_estimators=50,
+                                    max_features='auto',
+                                    random_state=20130810,
+                                    n_jobs=3)
+
+
+# In[ ]:
+
+
+rf_cv = GridSearchCV(estimator=rf_classif, 
+                     param_grid={'max_depth' : max_depth_list},
+                     scoring='accuracy',
+                     n_jobs=3)
 
 
 # In[ ]:
@@ -134,5 +127,202 @@ get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
 # In[ ]:
 
 
+rf_cv.cv_results_['mean_test_score']
+
+
+# ### Maximum number of features to consider at each split 
+
+# In[ ]:
+
+
+max_features_list = [5, 15, 30, 50]
+
+
+# In[ ]:
+
+
+rf_classif = RandomForestClassifier(n_estimators=50,
+                                    max_features='auto',
+                                    random_state=20130810,
+                                    n_jobs=3)
+
+
+# In[ ]:
+
+
+rf_cv = GridSearchCV(estimator=rf_classif, 
+                     param_grid={'max_features' : max_features_list},
+                     scoring='accuracy',
+                     n_jobs=3)
+
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
+
+
+# In[ ]:
+
+
+rf_cv.cv_results_['mean_test_score']
+
+
+# ### Minimum samples to split an internal node
+
+# In[ ]:
+
+
+min_samples_split_list = [2, 5, 10, 20]
+
+
+# In[ ]:
+
+
+rf_classif = RandomForestClassifier(n_estimators=50,
+                                    max_features='auto',
+                                    random_state=20130810,
+                                    n_jobs=3)
+
+
+# In[ ]:
+
+
+rf_cv = GridSearchCV(estimator=rf_classif, 
+                     param_grid={'min_samples_split' : min_samples_split_list},
+                     scoring='accuracy',
+                     n_jobs=3)
+
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
+
+
+# In[ ]:
+
+
+rf_cv.cv_results_['mean_test_score']
+
+
+# ### Minimum samples to be a leaf node
+
+# In[ ]:
+
+
+min_samples_leaf_list = [1, 5, 10, 20]
+
+
+# In[ ]:
+
+
+rf_classif = RandomForestClassifier(n_estimators=50,
+                                    max_features='auto',
+                                    random_state=20130810,
+                                    n_jobs=3)
+
+
+# In[ ]:
+
+
+rf_cv = GridSearchCV(estimator=rf_classif, 
+                     param_grid={'min_samples_leaf' : min_samples_leaf_list},
+                     scoring='accuracy',
+                     n_jobs=3)
+
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
+
+
+# In[ ]:
+
+
+rf_cv.cv_results_['mean_test_score']
+
+
+# ### Randomized grid search over parameter combinations
+
+# Now we tune the random forests model over a parameter grid
+
+# In[6]:
+
+
+pgrid = {'min_samples_leaf' : [5, 10],
+         'min_samples_split' : [5, 10],
+         'max_features' : [15, 30],
+         'max_depth' : [30, 50 , 100],
+         'n_estimators' : [100, 500]}
+
+
+# In[7]:
+
+
+rf_classif = RandomForestClassifier(random_state = 20130810,
+                                    n_jobs = 3)
+
+
+# In[8]:
+
+
+rf_cv = RandomizedSearchCV(estimator = rf_classif,
+                           param_distributions = pgrid,
+                           n_iter = 10,
+                           cv = 5,
+                           n_jobs = 3, 
+                           random_state = 20130810,
+                           verbose = 2)
+
+
+# In[9]:
+
+
+get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
+
+
+# In[11]:
+
+
+rf_cv.best_score_
+
+
+# In[10]:
+
+
 rf_cv.best_params_
+
+
+# ### Running the model at the final configurations
+
+# In[16]:
+
+
+rf_classif = RandomForestClassifier(n_estimators=500,
+                                    max_depth=50,
+                                    max_features=30,
+                                    min_samples_leaf=5,
+                                    min_samples_split=10,
+                                    random_state=20130810,
+                                    n_jobs=3)
+
+
+# In[19]:
+
+
+scores = cross_val_score(rf_classif,
+                         x_train,
+                         y_train, 
+                         scoring = 'accuracy',
+                         cv = 10,
+                         n_jobs = 3,
+                         verbose = 3)
+
+
+# In[21]:
+
+
+scores.mean(), scores.std()
 
