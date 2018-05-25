@@ -31,7 +31,7 @@ sns.set_style('ticks', {'grid.color' : '0.9'})
 from sklearn.ensemble import RandomForestClassifier
 
 
-# In[4]:
+# In[14]:
 
 
 # Model selection
@@ -39,7 +39,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, cross_val_score
 
 
-# In[5]:
+# In[4]:
 
 
 x_train = np.load('processed/wells_feature_matrix.npy')
@@ -248,7 +248,7 @@ rf_cv.cv_results_['mean_test_score']
 
 # Now we tune the random forests model over a parameter grid
 
-# In[6]:
+# In[ ]:
 
 
 pgrid = {'min_samples_leaf' : [5, 10],
@@ -258,14 +258,14 @@ pgrid = {'min_samples_leaf' : [5, 10],
          'n_estimators' : [100, 500]}
 
 
-# In[7]:
+# In[ ]:
 
 
 rf_classif = RandomForestClassifier(random_state = 20130810,
                                     n_jobs = 3)
 
 
-# In[8]:
+# In[ ]:
 
 
 rf_cv = RandomizedSearchCV(estimator = rf_classif,
@@ -277,19 +277,19 @@ rf_cv = RandomizedSearchCV(estimator = rf_classif,
                            verbose = 2)
 
 
-# In[9]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('time', '', 'rf_cv.fit(x_train, y_train)')
 
 
-# In[11]:
+# In[ ]:
 
 
 rf_cv.best_score_
 
 
-# In[10]:
+# In[ ]:
 
 
 rf_cv.best_params_
@@ -297,7 +297,7 @@ rf_cv.best_params_
 
 # ### Running the model at the final configurations
 
-# In[16]:
+# In[5]:
 
 
 rf_classif = RandomForestClassifier(n_estimators=500,
@@ -309,7 +309,7 @@ rf_classif = RandomForestClassifier(n_estimators=500,
                                     n_jobs=3)
 
 
-# In[19]:
+# In[ ]:
 
 
 scores = cross_val_score(rf_classif,
@@ -321,7 +321,7 @@ scores = cross_val_score(rf_classif,
                          verbose = 3)
 
 
-# In[21]:
+# In[ ]:
 
 
 scores.mean(), scores.std()
