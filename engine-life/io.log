@@ -1,0 +1,10 @@
+INFO:root:data from train_FD001.txt imported with shape: (20631, 31)
+INFO:root:data from train_FD002.txt imported with shape: (53759, 31)
+INFO:root:data from train_FD003.txt imported with shape: (24720, 31)
+INFO:root:data from train_FD004.txt imported with shape: (61249, 31)
+INFO:root:Writing the aggregated data to 
+INFO:root:data from train_FD001.txt imported with shape: (20631, 31)
+INFO:root:data from train_FD002.txt imported with shape: (53759, 31)
+INFO:root:data from train_FD003.txt imported with shape: (24720, 31)
+INFO:root:data from train_FD004.txt imported with shape: (61249, 31)
+INFO:root:Writing the aggregated data to processed-input/engine-data.feather
