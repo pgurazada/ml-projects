@@ -20,8 +20,8 @@ from sklearn.preprocessing import Imputer, StandardScaler
 from sklearn.base import TransformerMixin
 
 
-# # Preprocessing the features 
-# 
+# # Preprocessing the features
+#
 # We define the following class that imputes missing numerical features with the mean and the categorical features with the most often occuring value
 
 # In[4]:
